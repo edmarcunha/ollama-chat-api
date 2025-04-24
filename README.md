@@ -34,8 +34,8 @@ This project is a Laravel 12 application with Ollama local LLM integration via D
 ### 1. Clone the repository
 
 ```bash
-git clone git@github.com:Buzzvel/ollama-test.git
-cd ollama-test
+git clone git@github.com:Buzzvel/ollama-chat-test.git
+cd ollama-chat-test
 ```
 
 ### 2. Set up the environment and run composer install
