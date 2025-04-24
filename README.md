@@ -1,4 +1,4 @@
-![Buzzvel](/profile/banner/buzzvel-banner.png)
+![Buzzvel](/.github/profile/banner/buzzvel-banner.png)
 
 # 🚀 Buzzvel Backend Developer Process
 
