@@ -1,4 +1,4 @@
-<p align="center"><a href="https://buzzvel.com" target="_blank"><img src="https://buzzvel.com/storage/images/logo-light.svg" width="200" alt="Buzzvel Logo"></a></p>
+![Buzzvel](/profile/banner/buzzvel-banner.png)
 
 # 🚀 Buzzvel Backend Developer Process
 
