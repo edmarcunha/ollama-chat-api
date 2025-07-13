@@ -38,12 +38,6 @@ cp .env.example .env
 ### 🐳 Start Docker Containers with Sail
 
 ```bash
-./vendor/bin/sail up -d
-```
-
-> If this is your first time running the project:
-
-```bash
 composer install
 ./vendor/bin/sail up -d
 ```
@@ -81,10 +75,16 @@ Use tools like [Postman](https://www.postman.com/) or [Insomnia](https://insomni
 ```
 http://localhost
 ```
+> This is a backend-only API. It is not intended to be accessed via browser.
 
 ---
 
 ## 📁 Authentication Endpoints
+
+> Authentication is handled using Laravel Sanctum. After logging in, include the token in the Authorization header as a Bearer token:
+```
+Authorization: Bearer {token}
+```
 
 ### 🧾 POST /api/register
 
