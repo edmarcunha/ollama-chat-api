@@ -1,181 +1,405 @@
-![Buzzvel](/.github/profile/banner/buzzvel-banner.png)
+# 🧾 API Documentation
 
-# 🚀 Buzzvel Backend Developer Process
+> This is a technical challenge developed by **Edmar Cunha**.
 
-## 📋 Overview
+> This API is designed to manage user accounts and chat conversations powered by an AI model. It includes user authentication, account CRUD operations, and the ability to start, view, and manage chat sessions with message exchanges.
 
-This project is a Laravel 12 application with Ollama local LLM integration via Docker. The application provides authenticated users with access to an AI chat service powered by the Llama3.2:1b model.
+---
 
-## ✨ Features
+## 🚀 How to Run This Project Locally
 
-- 🔐 Complete authentication system
-- 🤖 Integration with Ollama LLM
-- 👤 Full user CRUD operations
-- 🔄 Scheduled deletion of user accounts
-- ⏱️ 24-hour job for updating main chat messages
-- 🧪 Comprehensive test suite
+### 🔧 Requirements
 
-## 🛠️ Tech Stack
+Make sure you have the following installed:
 
-- [Laravel 12](https://laravel.com/docs/12.x)
-- [Laravel Sail](https://laravel.com/docs/12.x/sail) (Docker development environment)
-- [PHP 8.2+](https://www.php.net/releases/8.2/en.php)
-- [Docker](https://docs.docker.com/get-started/)
-- [Ollama](https://hub.docker.com/r/ollama/ollama)
-- [MySQL](https://dev.mysql.com/doc/)
+- [Docker](https://www.docker.com/)
+- [Laravel Sail](https://laravel.com/docs/sail)
+- [Git](https://git-scm.com/)
 
-## 🚦 Prerequisites
+---
 
-- Docker & Docker Compose
-- Git
-
-## 📥 Installation
-
-### 1. Clone the repository
+### 📥 Clone the Repository
 
 ```bash
-git clone git@github.com:Buzzvel/ollama-chat-test.git
-cd ollama-chat-test
+git clone https://github.com/edmarcunha/ollama-chat-api.git
+cd ollama-chat-api
 ```
 
-### 2. Set up the environment and run composer install
+---
+
+### ⚙️ Copy the Environment File
 
 ```bash
 cp .env.example .env
-composer install
 ```
 
-Update your `.env` file with your database and other necessary configurations.
+---
 
-### 3. Start Laravel Sail
+### 🐳 Start Docker Containers with Sail
 
 ```bash
 ./vendor/bin/sail up -d
 ```
 
-### 4. Generate application key
+> If this is your first time running the project:
+
+```bash
+composer install
+./vendor/bin/sail up -d
+```
+
+---
+
+### 🔑 Generate Application Key
 
 ```bash
 ./vendor/bin/sail artisan key:generate
 ```
 
-### 5. Run migrations
+---
+
+### 🧬 Run Migrations and Seeders
 
 ```bash
 ./vendor/bin/sail artisan migrate
 ```
 
-### 6. Set up the Ollama LLM
+---
+
+### ✅ Run Tests
 
 ```bash
-./vendor/bin/sail exec ollama ollama run llama3.2:1b
+./vendor/bin/sail artisan test
 ```
 
-### 7. Interacting with Ollama LLM
+---
 
-Ollama runs on port 11434 by default. After setting up the container and running the model, you can test it using CURL:
+### 🧪 Test the API Locally
 
-```bash
-curl -X POST http://localhost:11434/api/generate -d '{
-  "model": "llama3.2:1b",
-  "prompt": "What is the capital of Portugal?"
-}'
+Use tools like [Postman](https://www.postman.com/) or [Insomnia](https://insomnia.rest/) to make requests:
+
+```
+http://localhost
 ```
 
-Example response:
+---
+
+## 📁 Authentication Endpoints
+
+### 🧾 POST /api/register
+
+**Description:** Registers a new user.
+
+**Request Body:**
+
 ```json
 {
-  "model": "llama3.2:1b",
-  "created_at": "2023-06-15T12:34:56.789Z",
-  "response": "The capital of Portugal is Lisbon.",
-  "done": true
+  "name": "New User",
+  "email": "new.user@example.com",
+  "password": "secret",
+  "password_confirmation": "secret"
 }
 ```
 
-For more information about Ollama API, visit the [official Docker image page](https://hub.docker.com/r/ollama/ollama) and [Ollama documentation](https://github.com/ollama/ollama).
+**Response:**
 
-### 8. (Optional) Installing Ollama-Laravel Package
-
-You can use the [Ollama-Laravel package](https://github.com/cloudstudio/ollama-laravel) to simplify interaction with the Ollama API:
-
-```bash
-./vendor/bin/sail composer require cloudstudio/ollama-laravel
-```
-
-## 🧩 Project Requirements
-
-### 1. Authentication System
-
-Implement a complete authentication flow with:
-- Registration
-- Login
-- Logout
-- Password reset
-- Email verification
-
-You can use [Laravel Fortify](https://laravel.com/docs/12.x/fortify), [Laravel Breeze](https://laravel.com/docs/12.x/starter-kits#laravel-breeze), or any other suitable package.
-
-### 2. User Management
-
-Create a comprehensive CRUD system for user information:
-- Create: User registration
-- Read: Fetch user details
-- Update: Edit user information
-- Delete: Schedule account deletion (soft delete)
-
-### 3. Ollama LLM Integration
-
-Integrate with the Ollama LLM service to:
-- Connect authenticated users to the chat API
-- Process and store chat histories
-- Ensure secure communication between the frontend and the LLM
-
-### 4. Scheduled Jobs
-
-Implement scheduled tasks:
-- Process scheduled account deletions
-
-```php
-// Example scheduler configuration
-protected function schedule(Schedule $schedule)
+```json
 {
-    $schedule->command('chat:update-main-message')->daily();
-    $schedule->command('users:process-deletions')->daily();
+  "message": "User registered successfully",
+  "user": {
+    "id": 1,
+    "name": "New User",
+    "email": "new.user@example.com"
+  }
 }
 ```
 
-### 5. Testing
+**Status Codes:**
 
-Write comprehensive tests using either PHPUnit or PEST:
-- Unit tests
-- Feature tests
-- Integration tests
+- 201 Created
+- 422 Validation error
 
-## 🔍 Evaluation Criteria
+---
 
-Your solution will be evaluated based on:
-- Code quality and organization
-- Use of Laravel features and best practices
-- Test coverage and quality
-- Implementation of required features
-- Documentation
+### 🔐 POST /api/login
 
-## 📤 Submission
+**Description:** Authenticates a user.
 
-When you have completed the assignment, please submit your work via:
+**Request Body:**
 
-- [ClickUp Form](https://forms.clickup.com/6647387/f/6avjv-18455/PLUYAZ40HA3XTQOEFW)
+```json
+{
+  "email": "new.user@example.com",
+  "password": "secret"
+}
+```
 
-You can also apply for the Mid-Level Back-End Developer position at:
+**Response:**
 
-- [Buzzvel Careers Page](https://buzzvel.com/careers/mid-level-back-end-developer)
+```json
+{
+  "token": "...",
+  "user": {
+    "id": 1,
+    "name": "New User",
+    "email": "new.user@example.com",
+    "..."
+  }
+}
+```
 
-## 🏢 About Buzzvel
+**Status Codes:**
 
-Buzzvel is a Portuguese company that works from Lisbon to the world, with digital solutions always thinking of you. We have been specializing in innovative technologies for over 10 years, creating great web applications, sites, and shops for clients in sectors such as Education, Retail, Telecommunications, Finance, Software & High Tech, and Blockchain.
+- 200 OK
+- 401 Unauthorized
 
-To learn more about Buzzvel, visit [our About page](https://buzzvel.com/about).
+---
 
-## 📝 License
+### 🔓 POST /api/logout
 
-This project is licensed under the MIT License.
+**Description:** Logs out the current user.
+
+**Response:**
+
+```json
+{
+  "message": "Logged out successfully"
+}
+```
+
+**Status Codes:**
+
+- 200 OK
+- 401 Unauthorized
+
+---
+
+## 👤 User Endpoints
+
+### 📄 GET /api/users
+
+**Description:** Returns all users.
+
+**Response:**
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Edmar",
+    "email": "user@example.com"
+  }
+]
+```
+
+**Status Codes:**
+
+- 200 OK
+
+---
+
+
+### 🔍 GET /api/users/{user}
+
+**Description:** Gets a specific user by ID.
+
+**Response:**
+
+```json
+{
+  "id": 1,
+  "name": "New User",
+  "email": "new.user@example.com"
+}
+```
+
+**Status Codes:**
+
+- 200 OK
+- 404 Not Found
+
+---
+
+### ✏️ PUT /api/users/{user}
+
+**Description:** Updates a specific user.
+
+**Request Body:**
+
+```json
+{
+  "name": "New Name",
+  "email": "new@email.com"
+}
+```
+
+**Response:**
+
+```json
+{
+  "message": "User updated successfully",
+  "user": {
+    "id": 1,
+    "name": "New Name",
+    "email": "new@email.com"
+  }
+}
+```
+
+**Status Codes:**
+
+- 200 OK
+- 422 Validation error
+
+---
+
+### ❌ DELETE /api/users/{user}
+
+**Description:** Soft deletes a user and schedules permanent deletion.
+
+**Response:**
+
+```json
+{
+  "message": "User scheduled for deletion in 7 days.",
+  "scheduled_for": "2025-07-20 12:00:00"
+}
+```
+
+**Status Codes:**
+
+- 200 OK
+
+---
+
+## 💬 Chat Endpoints
+
+### ➕ POST /api/chats
+
+**Description:** Creates a new chat with the user's initial message.
+
+**Request Body:**
+
+```json
+{
+  "message": "What is the capital of France?"
+}
+```
+
+**Response:**
+
+```json
+{
+  "chat_id": 1,
+  "response": "The capital of France is Paris."
+}
+```
+
+**Status Codes:**
+
+- 200 OK
+- 422 Validation error
+
+---
+
+### 📄 GET /api/chats
+
+**Description:** Lists the authenticated user's chats.
+
+**Response:**
+
+```json
+[
+  {
+    "id": 1,
+    "title": "Trip to Mars",
+    "messages": [...]
+  }
+]
+```
+
+**Status Codes:**
+
+- 200 OK
+
+---
+
+### 📨 POST /api/chats/{chat}/message
+
+**Description:** Sends a message in an existing chat.
+
+**Request Body:**
+
+```json
+{
+  "message": "And what currency do they use?"
+}
+```
+
+**Response:**
+
+```json
+{
+  "chat_id": 1,
+  "response": "They use the Euro."
+}
+```
+
+**Status Codes:**
+
+- 200 OK
+- 403 Unauthorized
+
+---
+
+### 🔍 GET /api/chats/{chat}
+
+**Description:** Retrieves a single chat including dialogue messages.
+
+**Response:**
+
+```json
+{
+  "chat_id": 1,
+  "title": "Trip to Mars",
+  "dialogue": [
+    {
+      "id": 1,
+      "role": "user",
+      "content": "What is the capital of Portugal?",
+      "timestamp": "2025-07-13 10:00:00"
+    },
+    {
+      "id": 2,
+      "role": "assistant",
+      "content": "The capital of Portugal is Lisboa.",
+      "timestamp": "2025-07-13 10:00:01"
+    }
+  ]
+}
+```
+
+**Status Codes:**
+
+- 200 OK
+- 403 Unauthorized
+
+---
+
+### ❌ DELETE /api/chats/{chat}
+
+**Description:** Deletes a chat permanently (only by the owner).
+
+**Response:**
+
+```json
+{
+  "message": "Chat deleted successfully."
+}
+```
+
+**Status Codes:**
+
+- 204 No Content
+- 403 Unauthorized
+
