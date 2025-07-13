@@ -55,14 +55,14 @@ class ChatController extends Controller
         $this->authorize('view', $chat);
 
         $chat->load('messages');
-        // Montar estrutura como diálogo
+        // dialog structure
         $dialogue = $chat->messages
         ->sortBy('created_at')
         ->map(function ($message) {
             return [
-                'id' => $message->id,               // ID da mensagem
+                'id' => $message->id,               // message ID
                 'role' => $message->role,           // 'user' ou 'assistant'
-                'content' => $message->content,     // texto da mensagem
+                'content' => $message->content,     // message content
                 'timestamp' => $message->created_at->toDateTimeString(),
             ];
         })

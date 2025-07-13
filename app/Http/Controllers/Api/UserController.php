@@ -61,7 +61,7 @@ class UserController extends Controller
 
         if ($request->has('email')) {
             $user->email = $request->email;
-            $user->email_verified_at = null; // força nova verificação
+            $user->email_verified_at = null; // force re-verification
         }
 
         if ($request->filled('password')) {
@@ -71,7 +71,7 @@ class UserController extends Controller
         $user->update($data);
 
         return response()->json([
-            'message' => 'Usuário atualizado com sucesso',
+            'message' => 'User updated successfully.',
             'user' => $user
             ], 200);
     }

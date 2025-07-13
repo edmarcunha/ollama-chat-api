@@ -34,10 +34,10 @@ class ProcessScheduledDeletions extends Command
 
         foreach ($users as $user) {
             $user->forceDelete();
-            $this->info("Usuário ID {$user->id} deletado permanentemente.");
+            $this->info("User ID {$user->id} permanently deleted.");
         }
 
-        $this->info("Processamento concluído.");
+        $this->info("Processing completed.");
         return Command::SUCCESS;
     }
 }

@@ -20,13 +20,13 @@ class ChatService
 
     public function handleMessage(Chat $chat, string $message): array
     {
-        // Salva a mensagem do usuário
+        // Save the user's message
         $chat->messages()->create([
             'role' => 'user',
             'content' => $message,
         ]);
 
-        // Obtém o histórico de até 10 mensagens
+        // Get the last 10 messages for context
         $history = $chat->messages()
             ->latest('id')
             ->take(10)
@@ -39,12 +39,12 @@ class ChatService
             ->values()
             ->toArray();
 
-        // Envia para o modelo
+        // Send the message to the AI model
         $response = Ollama::model('llama3.2:1b')->chat($history);
 
-        $assistantContent = $response['message']['content'] ?? 'Erro ao gerar resposta.';
+        $assistantContent = $response['message']['content'] ?? 'Error processing answer.';
 
-        // Salva a resposta
+        // Save the assistant's response
         $chat->messages()->create([
             'role' => 'assistant',
             'content' => $assistantContent,
@@ -59,11 +59,11 @@ class ChatService
     private function generateTitle(string $message): string
     {
         // Gera um título com base na primeira pergunta enviada
-        $response = Ollama::agent('Crie um título curto para essa conversa com base na pergunta a seguir. Retorne apenas o título.')
+        $response = Ollama::agent('Create a short title for this conversation based on the following question. Return only the title.')
             ->prompt($message)
             ->model('llama3.2:1b')
             ->ask();
 
-        return $response['response'] ?? 'Nova conversa';
+        return $response['response'] ?? 'New Chat';
     }
 }

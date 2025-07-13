@@ -11,13 +11,13 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Api\ChatController;
 
-// ROTAS PÚBLICAS
+// PUBLIC ROUTES
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
 Route::post('/reset-password', [NewPasswordController::class, 'store']);
 
-// ROTAS AUTENTICADAS
+// AUTH ROUTES
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
