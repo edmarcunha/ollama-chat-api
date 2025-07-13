@@ -1,11 +1,11 @@
 services:
     laravel.test:
         build:
-            context: './vendor/laravel/sail/runtimes/8.4'
+            context: ./vendor/laravel/sail/runtimes/8.4
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: 'sail-8.4/app'
+        image: sail-8.4/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -48,15 +48,14 @@ services:
             retries: 3
             timeout: 5s
     ollama:
-        image: ollama/ollama:latest
+        image: 'ollama/ollama:latest'
         container_name: ollama
         volumes:
-            - sail-ollama:/root/.ollama
+            - 'sail-ollama:/root/.ollama'
         ports:
-            - "${OLLAMA_PORT:-11434}:11434"
+            - '${OLLAMA_PORT:-11434}:11434'
         networks:
             - sail
-            
 networks:
     sail:
         driver: bridge
